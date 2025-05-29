@@ -155,3 +155,49 @@ class KiwiTimeslot(sillyorm.model.Model):
     start = sillyorm.fields.Datetime()
     end = sillyorm.fields.Datetime()
     kiwi = sillyorm.fields.Many2one("kiwi")
+
+
+class Frequency(sillyorm.model.Model):
+    _name = "kiwi_frequency"
+
+    stationName = sillyorm.fields.String()
+    frequencyDay = sillyorm.fields.Float()
+    frequencyDoesNotChange = sillyorm.fields.Boolean()
+    frequencyNight = sillyorm.fields.Float()
+
+    # Start times for each month - Day and Night
+    startDayJan = sillyorm.fields.Integer()
+    startNightJan = sillyorm.fields.Integer()
+    
+    startDayFeb = sillyorm.fields.Integer()
+    startNightFeb = sillyorm.fields.Integer()
+    
+    startDayMar = sillyorm.fields.Integer()
+    startNightMar = sillyorm.fields.Integer()
+    
+    startDayApr = sillyorm.fields.Integer()
+    startNightApr = sillyorm.fields.Integer()
+    
+    startDayMay = sillyorm.fields.Integer()
+    startNightMay = sillyorm.fields.Integer()
+    
+    startDayJun = sillyorm.fields.Integer()
+    startNightJun = sillyorm.fields.Integer()
+    
+    startDayJul = sillyorm.fields.Integer()
+    startNightJul = sillyorm.fields.Integer()
+    
+    startDayAug = sillyorm.fields.Integer()
+    startNightAug = sillyorm.fields.Integer()
+    
+    startDaySep = sillyorm.fields.Integer()
+    startNightSep = sillyorm.fields.Integer()
+    
+    startDayOct = sillyorm.fields.Integer()
+    startNightOct = sillyorm.fields.Integer()
+    
+    startDayNov = sillyorm.fields.Integer()
+    startNightNov = sillyorm.fields.Integer()
+    
+    startDayDec = sillyorm.fields.Integer()
+    startNightDec = sillyorm.fields.Integer()
