@@ -201,3 +201,40 @@ class Frequency(sillyorm.model.Model):
     
     startDayDec = sillyorm.fields.Integer()
     startNightDec = sillyorm.fields.Integer()
+    
+
+
+    @staticmethod
+    def get_frequency(self, dt=None):
+        self.ensure_one()
+
+        if self.frequencyDoesNotChange:
+            return self.frequencyDay
+
+        if dt is None:
+            dt = datetime.datetime.utcnow()
+
+        month_abbr = dt.strftime("%b")  # Ex: Jan, Feb, etc.
+        minute_of_day = dt.hour * 60 + dt.minute
+
+        # Campos como "startDayJan", que contêm string "HH:MM"
+        start_day_str = getattr(self, f"startDay{month_abbr}")
+        start_night_str = getattr(self, f"startNight{month_abbr}")
+
+        # Converter HH:MM para minutos
+        start_day = _hhmm_to_minutes(start_day_str)
+        start_night = _hhmm_to_minutes(start_night_str)
+
+        if _is_in_hour_range(start_day, start_night - 1, minute_of_day):
+            return self.frequencyDay
+        else:
+            return self.frequencyNight
+    
+def _hhmm_to_minutes(hhmm):
+    hour, minute = map(int, hhmm.split(":"))
+    return hour * 60 + minute
+
+def _is_in_hour_range(start_minute, end_minute, current_minute):
+    if start_minute > end_minute:
+        return current_minute >= start_minute or current_minute <= end_minute
+    return start_minute <= current_minute <= end_minute
