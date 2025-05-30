@@ -148,9 +148,9 @@ views.update({
                 "type": "str"
             },
             {
-                "name": "Frequency does not change",
-                "field": "frequencyDoesNotChange",
-                "type": "boolean"
+                "name": "Modulation",
+                "field": "stationModulation",
+                "type": "str"
             },
             {
                 "name": "Frequency during the day",
@@ -199,6 +199,7 @@ views.update({
             { "name": "Start time of day frequency (December)", "field": "startDayDec", "type": "int" },
             { "name": "Start time of night frequency (December)", "field": "startNightDec", "type": "int" }
         ],
+        "actions": [],
     },
 
   "kiwi_frequency_list": {
@@ -257,9 +258,14 @@ views.update({
 
             { "name": "Start time of day frequency (December)", "field": "startDayDec", "type": "int" },
             { "name": "Start time of night frequency (December)", "field": "startNightDec", "type": "int" }
-            ],
+        ],
+        "pagination": {
+            "default_page_size": 5,
+        },
+        "form_view_id": "kiwi_frequency_config",
     },
-})
+    },
+)
 
 
  

@@ -161,6 +161,7 @@ class Frequency(sillyorm.model.Model):
     _name = "kiwi_frequency"
 
     stationName = sillyorm.fields.String()
+    stationModulation = sillyorm.fields.String()
     frequencyDay = sillyorm.fields.Float()
     frequencyDoesNotChange = sillyorm.fields.Boolean()
     frequencyNight = sillyorm.fields.Float()
@@ -202,37 +203,35 @@ class Frequency(sillyorm.model.Model):
     startDayDec = sillyorm.fields.Integer()
     startNightDec = sillyorm.fields.Integer()
     
-
-
-    @staticmethod
     def get_frequency(self, dt=None):
-        self.ensure_one()
-
         if self.frequencyDoesNotChange:
-            return self.frequencyDay
+            return str(self.frequencyDay)
 
         if dt is None:
             dt = datetime.datetime.utcnow()
 
-        month_abbr = dt.strftime("%b")  # Ex: Jan, Feb, etc.
+        month_abbr = dt.strftime("%b")
         minute_of_day = dt.hour * 60 + dt.minute
 
-        # Campos como "startDayJan", que contêm string "HH:MM"
         start_day_str = getattr(self, f"startDay{month_abbr}")
         start_night_str = getattr(self, f"startNight{month_abbr}")
 
-        # Converter HH:MM para minutos
         start_day = _hhmm_to_minutes(start_day_str)
         start_night = _hhmm_to_minutes(start_night_str)
 
         if _is_in_hour_range(start_day, start_night - 1, minute_of_day):
-            return self.frequencyDay
+            return str(self.frequencyDay)
         else:
-            return self.frequencyNight
+            return str(self.frequencyNight)
+
+
     
 def _hhmm_to_minutes(hhmm):
-    hour, minute = map(int, hhmm.split(":"))
+    hhmm = str(hhmm).zfill(4)  # Converte para string e preenche com zero à esquerda se necessário
+    hour = int(hhmm[:2])
+    minute = int(hhmm[2:4])
     return hour * 60 + minute
+
 
 def _is_in_hour_range(start_minute, end_minute, current_minute):
     if start_minute > end_minute:
