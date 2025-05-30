@@ -199,6 +199,68 @@ views.update({
             { "name": "Start time of day frequency (December)", "field": "startDayDec", "type": "int" },
             { "name": "Start time of night frequency (December)", "field": "startNightDec", "type": "int" }
         ],
-    }
+    },
 
+  "kiwi_frequency_list": {
+        "type": "list",
+        "model": "kiwi_frequency",
+        "fields": [
+            {
+                "name": "Station name",
+                "field": "stationName"
+            },
+            {
+                "name": "Frequency does not change",
+                "field": "frequencyDoesNotChange"
+            },
+            {
+                "name": "Frequency during the day",
+                "field": "frequencyDay"
+            },
+            {
+                "name": "Frequency at night",
+                "field": "frequencyNight"
+            },
+
+            { "name": "Start time of day frequency (January)", "field": "startDayJan", "type": "int" },
+            { "name": "Start time of night frequency (January)", "field": "startNightJan", "type": "int" },
+
+            { "name": "Start time of day frequency (February)", "field": "startDayFeb", "type": "int" },
+            { "name": "Start time of night frequency (February)", "field": "startNightFeb", "type": "int" },
+
+            { "name": "Start time of day frequency (March)", "field": "startDayMar", "type": "int" },
+            { "name": "Start time of night frequency (March)", "field": "startNightMar", "type": "int" },
+
+            { "name": "Start time of day frequency (April)", "field": "startDayApr", "type": "int" },
+            { "name": "Start time of night frequency (April)", "field": "startNightApr", "type": "int" },
+
+            { "name": "Start time of day frequency (May)", "field": "startDayMay", "type": "int" },
+            { "name": "Start time of night frequency (May)", "field": "startNightMay", "type": "int" },
+
+            { "name": "Start time of day frequency (June)", "field": "startDayJun", "type": "int" },
+            { "name": "Start time of night frequency (June)", "field": "startNightJun", "type": "int" },
+
+            { "name": "Start time of day frequency (July)", "field": "startDayJul", "type": "int" },
+            { "name": "Start time of night frequency (July)", "field": "startNightJul", "type": "int" },
+
+            { "name": "Start time of day frequency (August)", "field": "startDayAug", "type": "int" },
+            { "name": "Start time of night frequency (August)", "field": "startNightAug", "type": "int" },
+
+            { "name": "Start time of day frequency (September)", "field": "startDaySep", "type": "int" },
+            { "name": "Start time of night frequency (September)", "field": "startNightSep", "type": "int" },
+
+            { "name": "Start time of day frequency (October)", "field": "startDayOct", "type": "int" },
+            { "name": "Start time of night frequency (October)", "field": "startNightOct", "type": "int" },
+
+            { "name": "Start time of day frequency (November)", "field": "startDayNov", "type": "int" },
+            { "name": "Start time of night frequency (November)", "field": "startNightNov", "type": "int" },
+
+            { "name": "Start time of day frequency (December)", "field": "startDayDec", "type": "int" },
+            { "name": "Start time of night frequency (December)", "field": "startNightDec", "type": "int" }
+            ],
+    },
 })
+
+
+ 
+
