@@ -153,6 +153,11 @@ views.update({
                 "type": "str"
             },
             {
+                "name": "Frequency does not change (0 or 1)",
+                "field": "frequencyDoesNotChange",
+                "type": "int"
+            },
+            {
                 "name": "Frequency during the day",
                 "field": "frequencyDay",
                 "type": "float"

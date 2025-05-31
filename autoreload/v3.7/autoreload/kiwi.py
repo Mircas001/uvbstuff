@@ -163,7 +163,7 @@ class Frequency(sillyorm.model.Model):
     stationName = sillyorm.fields.String()
     stationModulation = sillyorm.fields.String()
     frequencyDay = sillyorm.fields.Float()
-    frequencyDoesNotChange = sillyorm.fields.Boolean()
+    frequencyDoesNotChange = sillyorm.fields.Integer()
     frequencyNight = sillyorm.fields.Float()
 
     # Start times for each month - Day and Night
@@ -204,7 +204,7 @@ class Frequency(sillyorm.model.Model):
     startNightDec = sillyorm.fields.Integer()
     
     def get_frequency(self, dt=None):
-        if self.frequencyDoesNotChange:
+        if self.frequencyDoesNotChange == 1:
             return str(self.frequencyDay)
 
         if dt is None:

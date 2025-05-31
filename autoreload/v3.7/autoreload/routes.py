@@ -9,7 +9,9 @@ _logger = logging.getLogger(__name__)
 status = {
     "url": None,
     "timeslot": None,
+    "frequency": None,  # <- novo campo
 }
+
 
 class AutoreloadRouter(http.Router):
     @http.route("/")
@@ -39,12 +41,15 @@ class AutoreloadRouter(http.Router):
                     status["timeslot"] = None
                     return False
                 stationName = env["settings_setting"].get_value("autoreload.kiwi_defaultStation")
-                print(stationName)
                 results = env["kiwi_frequency"].search([("stationName", "=", str(stationName))])
                 if not results:
                     _logger.error("No frequency entry found for station '%s'", stationName)
-                    return None  # or handle gracefully
+                    return None
+
                 station = results[0]
+                current_freq = station.get_frequency()
+                status["frequency"] = current_freq  # <- salve a frequência atual
+
 
                 status["url"] = kiwi.get_tune_url(
                     freq=station.get_frequency(),
@@ -82,6 +87,15 @@ class AutoreloadRouter(http.Router):
 
             request = flask.request.json
             _logger.info("/kiwi/instruction request: %s - current status: %s", request, status)
+            
+            stationName = env["settings_setting"].get_value("autoreload.kiwi_defaultStation")
+            results = env["kiwi_frequency"].search([("stationName", "=", str(stationName))])
+            station = results[0]
+            current_freq = station.get_frequency()
+
+            # Se a frequência mudou (ex: virou noite), recarrega:
+            if current_freq != status["frequency"]:
+                return load_new_kiwi()
 
             # Is the client not showing anything or do we not know what the client is doing?
             if request["iframeContent"] == "" or (request["iframeContent"] != status["url"] and status["url"] is None):
@@ -101,6 +115,7 @@ class AutoreloadRouter(http.Router):
                         "text": f"reload in: {int(mins_left)}min",
                     }
                 }
+
 
             if request["iframeContent"] != status["url"] and status["url"] is not None:
                 status["timeslot"].end = datetime.datetime.now(datetime.UTC).replace(tzinfo=None)
