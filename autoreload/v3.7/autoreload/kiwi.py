@@ -155,3 +155,85 @@ class KiwiTimeslot(sillyorm.model.Model):
     start = sillyorm.fields.Datetime()
     end = sillyorm.fields.Datetime()
     kiwi = sillyorm.fields.Many2one("kiwi")
+
+
+class Frequency(sillyorm.model.Model):
+    _name = "kiwi_frequency"
+
+    stationName = sillyorm.fields.String()
+    stationModulation = sillyorm.fields.String()
+    frequencyDay = sillyorm.fields.Float()
+    frequencyDoesNotChange = sillyorm.fields.Integer()
+    frequencyNight = sillyorm.fields.Float()
+
+    # Start times for each month - Day and Night
+    startDayJan = sillyorm.fields.Integer()
+    startNightJan = sillyorm.fields.Integer()
+    
+    startDayFeb = sillyorm.fields.Integer()
+    startNightFeb = sillyorm.fields.Integer()
+    
+    startDayMar = sillyorm.fields.Integer()
+    startNightMar = sillyorm.fields.Integer()
+    
+    startDayApr = sillyorm.fields.Integer()
+    startNightApr = sillyorm.fields.Integer()
+    
+    startDayMay = sillyorm.fields.Integer()
+    startNightMay = sillyorm.fields.Integer()
+    
+    startDayJun = sillyorm.fields.Integer()
+    startNightJun = sillyorm.fields.Integer()
+    
+    startDayJul = sillyorm.fields.Integer()
+    startNightJul = sillyorm.fields.Integer()
+    
+    startDayAug = sillyorm.fields.Integer()
+    startNightAug = sillyorm.fields.Integer()
+    
+    startDaySep = sillyorm.fields.Integer()
+    startNightSep = sillyorm.fields.Integer()
+    
+    startDayOct = sillyorm.fields.Integer()
+    startNightOct = sillyorm.fields.Integer()
+    
+    startDayNov = sillyorm.fields.Integer()
+    startNightNov = sillyorm.fields.Integer()
+    
+    startDayDec = sillyorm.fields.Integer()
+    startNightDec = sillyorm.fields.Integer()
+    
+    def get_frequency(self, dt=None):
+        if self.frequencyDoesNotChange == 1:
+            return str(self.frequencyDay)
+
+        if dt is None:
+            dt = datetime.datetime.utcnow()
+
+        month_abbr = dt.strftime("%b")
+        minute_of_day = dt.hour * 60 + dt.minute
+
+        start_day_str = getattr(self, f"startDay{month_abbr}")
+        start_night_str = getattr(self, f"startNight{month_abbr}")
+
+        start_day = _hhmm_to_minutes(start_day_str)
+        start_night = _hhmm_to_minutes(start_night_str)
+
+        if _is_in_hour_range(start_day, start_night - 1, minute_of_day):
+            return str(self.frequencyDay)
+        else:
+            return str(self.frequencyNight)
+
+
+    
+def _hhmm_to_minutes(hhmm):
+    hhmm = str(hhmm).zfill(4)  # Converte para string e preenche com zero à esquerda se necessário
+    hour = int(hhmm[:2])
+    minute = int(hhmm[2:4])
+    return hour * 60 + minute
+
+
+def _is_in_hour_range(start_minute, end_minute, current_minute):
+    if start_minute > end_minute:
+        return current_minute >= start_minute or current_minute <= end_minute
+    return start_minute <= current_minute <= end_minute
